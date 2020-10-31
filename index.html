@@ -129,7 +129,7 @@
       var data = $('form#formdata')[0]
       var formData = new FormData(data);
       $.ajax({
-        url: 'http://127.0.0.1:5000/',
+        url: 'https://gee-flask.herokuapp.com/',
         contentType: false,
         enctype: 'multipart/form-data',
         type: 'POST',
@@ -166,7 +166,7 @@
       var data = $('form#worlddata')[0]
       var formData = new FormData(data);
       $.ajax({
-        url: 'http://127.0.0.1:5000/world',
+        url: 'https://gee-flask.herokuapp.com/world',
         contentType: false,
         enctype: 'multipart/form-data',
         type: 'POST',
