@@ -62,6 +62,25 @@
       <center><button id="sub" type="submit" class="btn btn-primary">Add Layer</button></center>
       <br>
     </form>
+    <form id="worlddata" method="post" enctype="multipart/form-data">
+      <center>
+        <h2 class="m-3">World Data</h2>
+      </center>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="indicat" class="select">Graphical Indicator</label>
+            <select name="indicat" id="indicat" required="required" class="form-control inline">
+              <option value="lulc">Land Use Land cover</option>
+              <option value="dem">DEM</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <br><br>
+      <center><button id="worldsub" type="submit" class="btn btn-primary">Add Layer</button></center>
+      <br>
+    </form>
   </div>
   </div>
   <!-- JavaScript Files -->
@@ -110,7 +129,44 @@
       var data = $('form#formdata')[0]
       var formData = new FormData(data);
       $.ajax({
-        url: 'https://gee-flask.herokuapp.com/',
+        url: 'http://127.0.0.1:5000/',
+        contentType: false,
+        enctype: 'multipart/form-data',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        processData: false,
+        success: function (data) {
+          data.records.map((item) => {
+            window['Landsat' + i] = L.tileLayer(`${item.url}`, {
+              attribution: `${item.attribution}`,
+            }).addTo(mymap);
+            overlayMaps[`${item.name}`] = window['Landsat' + i]
+            i++;
+          })
+          layerscontrol = L.control.layers(baseMaps, overlayMaps).addTo(mymap);
+        },
+      });
+      // reset form data 
+      data.reset()
+    });
+    $('form#worlddata').submit(function (e) {
+      // remove previous layers and controls
+      if (layerscontrol != undefined) {
+        mymap.eachLayer(function (layer) {
+          if (layer.options.attribution != 'leaflet') {
+            mymap.removeLayer(layer);
+          }
+        });
+        layerscontrol.remove()
+      }
+      // prevent default form submit action
+      e.preventDefault();
+      // prepare form data
+      var data = $('form#worlddata')[0]
+      var formData = new FormData(data);
+      $.ajax({
+        url: 'http://127.0.0.1:5000/world',
         contentType: false,
         enctype: 'multipart/form-data',
         type: 'POST',
