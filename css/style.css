@@ -9,11 +9,24 @@ body {
 #mapid {
     height: 99.5vh;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #a-container{
     height: 100vh;
     width: 100%;
 }
 form{
-    font-size: 1.5rem;
+    font-size: 1rem;
+}
+#loader{
+    position: relative;
+    z-index: 100000;
+}
+.viz{
+    opacity: 0;
+}
+.colr{
+    opacity: 1;
 }
