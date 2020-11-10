@@ -154,12 +154,14 @@
           })
           layerscontrol = L.control.layers(baseMaps, overlayMaps).addTo(mymap);
           load.classList.remove('colr')
+          var bound = data.records[0].bounds
+          mymap.fitBounds(bound)
         },
       });
       // reset form data 
       data.reset()
     });
-    
+
     $('form#worlddata').submit(function (e) {
       load.classList.add('colr')
       // remove previous layers and controls
@@ -185,6 +187,7 @@
         cache: false,
         processData: false,
         success: function (data) {
+          console.log(data)
           data.records.map((item) => {
             window['Landsat' + i] = L.tileLayer(`${item.url}`, {
               attribution: `${item.attribution}`,
